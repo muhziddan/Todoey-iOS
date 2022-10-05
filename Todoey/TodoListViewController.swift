@@ -9,11 +9,17 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
     
-    var array = ["A", "B", "C"]
+    var array: [String] = []
+    
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+            array = items
+        }
     }
     
     //MARK: - Add new Item
@@ -30,6 +36,7 @@ class TodoListViewController: UITableViewController {
             guard let safeText = textField.text else {return}
             
             self.array.append(safeText)
+            self.defaults.set(self.array, forKey: "TodoListArray")
             self.tableView.reloadData()
         }
         
