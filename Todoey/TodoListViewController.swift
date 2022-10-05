@@ -9,15 +9,40 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
     
-    let array = ["A", "B", "C"]
+    var array = ["A", "B", "C"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
     }
     
-    
+    //MARK: - Add new Item
+    @IBAction func addNewItem(_ sender: UIBarButtonItem) {
+        
+        var textField = UITextField()
+        // Make the UI Alert View (the root alert view)
+        let alertView = UIAlertController(title: "Add New To Do Item", message: "", preferredStyle: .alert)
+        
+        // Make the action that it taken when user tap the alert button
+        let action = UIAlertAction(title: "Add Item", style: .default) { action in
+            // Text can be updated because textField var referencing the alertTextField
+            // So when it is called, it can get the latest text from the alertTextField
+            guard let safeText = textField.text else {return}
+            
+            self.array.append(safeText)
+            self.tableView.reloadData()
+        }
+        
+        alertView.addTextField { alertTextField in
+            textField.placeholder = "Type new item"
+            // This where textField var referencing alertTextField
+            textField = alertTextField
+        }
+        
+        alertView.addAction(action)
+        
+        present(alertView, animated: true)
+    }
 }
 
 //MARK: - TableView Datasource and Delegate Methods
