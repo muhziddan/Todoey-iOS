@@ -9,7 +9,7 @@ import UIKit
 
 class TodoListViewController: UITableViewController {
     
-    var array: [String] = []
+    var array = [MainModel]()
     
     let defaults = UserDefaults.standard
 
@@ -17,9 +17,39 @@ class TodoListViewController: UITableViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
-            array = items
-        }
+        array.append(MainModel(item: "one", state: false))
+        array.append(MainModel(item: "two", state: false))
+        array.append(MainModel(item: "three", state: false))
+        array.append(MainModel(item: "three", state: false))
+        array.append(MainModel(item: "two", state: false))
+        
+        array.append(MainModel(item: "one", state: false))
+        array.append(MainModel(item: "two", state: false))
+        array.append(MainModel(item: "three", state: false))
+        array.append(MainModel(item: "three", state: false))
+        array.append(MainModel(item: "two", state: false))
+        
+        array.append(MainModel(item: "one", state: false))
+        array.append(MainModel(item: "two", state: false))
+        array.append(MainModel(item: "three", state: false))
+        array.append(MainModel(item: "three", state: false))
+        array.append(MainModel(item: "two", state: false))
+        
+        array.append(MainModel(item: "one", state: false))
+        array.append(MainModel(item: "two", state: false))
+        array.append(MainModel(item: "three", state: false))
+        array.append(MainModel(item: "three", state: false))
+        array.append(MainModel(item: "two", state: false))
+        
+        array.append(MainModel(item: "one", state: false))
+        array.append(MainModel(item: "two", state: false))
+        array.append(MainModel(item: "three", state: false))
+        array.append(MainModel(item: "three", state: false))
+        array.append(MainModel(item: "two", state: false))
+        
+//        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
+//            array = items
+//        }
     }
     
     //MARK: - Add new Item
@@ -35,8 +65,8 @@ class TodoListViewController: UITableViewController {
             // So when it is called, it can get the latest text from the alertTextField
             guard let safeText = textField.text else {return}
             
-            self.array.append(safeText)
-            self.defaults.set(self.array, forKey: "TodoListArray")
+            self.array.append(MainModel(item: safeText, state: false))
+//            self.defaults.set(self.array, forKey: "TodoListArray")
             self.tableView.reloadData()
         }
         
@@ -62,17 +92,17 @@ extension TodoListViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
-        cell.textLabel?.text = array[indexPath.row]
+        cell.textLabel?.text = array[indexPath.row].item
+        cell.accessoryType = array[indexPath.row].state ? .checkmark : .none
         
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        let selectedCell = tableView.cellForRow(at: indexPath)
-        selectedCell?.accessoryType == .checkmark ? (selectedCell?.accessoryType = .none) : (selectedCell?.accessoryType = .checkmark)
+        array[indexPath.row].state = !array[indexPath.row].state
         
         tableView.deselectRow(at: indexPath, animated: true)
+        tableView.reloadData()
     }
 }
 
