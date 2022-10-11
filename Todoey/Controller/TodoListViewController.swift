@@ -17,12 +17,6 @@ class TodoListViewController: UITableViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        array.append(MainModel(item: "one", state: false))
-        array.append(MainModel(item: "two", state: false))
-        array.append(MainModel(item: "three", state: false))
-        array.append(MainModel(item: "three", state: false))
-        array.append(MainModel(item: "two", state: false))
-        
         loadData()
     }
     
