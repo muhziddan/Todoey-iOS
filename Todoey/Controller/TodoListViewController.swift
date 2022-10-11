@@ -10,6 +10,8 @@ import UIKit
 class TodoListViewController: UITableViewController {
     
     var array = [MainModel]()
+    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appending(path: "Items.plist")
+    // user domain mask is user home directory, a place where app will save personal item ssociated with it
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,6 +62,18 @@ class TodoListViewController: UITableViewController {
             guard let safeText = textField.text else {return}
             
             self.array.append(MainModel(item: safeText, state: false))
+            
+            // make encoder object
+            let encoder = PropertyListEncoder()
+            do {
+                // encode data to plist
+                let data = try encoder.encode(self.array)
+                guard let safeFilePath = self.dataFilePath else {return}
+                try data.write(to: safeFilePath)
+            } catch {
+                print(error.localizedDescription)
+            }
+            
             self.tableView.reloadData()
         }
         
