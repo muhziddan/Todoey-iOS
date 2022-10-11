@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct MainModel {
+struct MainModel: Codable {
     let item: String
     var state: Bool
 }
