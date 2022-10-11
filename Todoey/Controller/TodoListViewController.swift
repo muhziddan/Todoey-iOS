@@ -38,18 +38,7 @@ class TodoListViewController: UITableViewController {
             guard let safeText = textField.text else {return}
             
             self.array.append(MainModel(item: safeText, state: false))
-            
-            // make encoder object
-            let encoder = PropertyListEncoder()
-            do {
-                // encode data to plist
-                let data = try encoder.encode(self.array)
-                guard let safeFilePath = self.dataFilePath else {return}
-                try data.write(to: safeFilePath)
-            } catch {
-                print(error.localizedDescription)
-            }
-            
+            self.saveData()
             self.tableView.reloadData()
         }
         
@@ -62,6 +51,20 @@ class TodoListViewController: UITableViewController {
         alertView.addAction(action)
         
         present(alertView, animated: true)
+    }
+    
+    func saveData() {
+        // make encoder object
+        let encoder = PropertyListEncoder()
+        
+        do {
+            // encode data to plist
+            let data = try encoder.encode(array)
+            guard let safeFilePath = dataFilePath else {return}
+            try data.write(to: safeFilePath)
+        } catch {
+            print("error saving data with message: \(error.localizedDescription)")
+        }
     }
 }
 
@@ -85,6 +88,8 @@ extension TodoListViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         array[indexPath.row].state = !array[indexPath.row].state
+        
+        saveData()
         
         tableView.deselectRow(at: indexPath, animated: true)
         tableView.reloadData()
