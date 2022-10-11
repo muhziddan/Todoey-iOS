@@ -10,8 +10,6 @@ import UIKit
 class TodoListViewController: UITableViewController {
     
     var array = [MainModel]()
-    
-    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,10 +44,6 @@ class TodoListViewController: UITableViewController {
         array.append(MainModel(item: "three", state: false))
         array.append(MainModel(item: "three", state: false))
         array.append(MainModel(item: "two", state: false))
-        
-//        if let items = defaults.array(forKey: "TodoListArray") as? [String] {
-//            array = items
-//        }
     }
     
     //MARK: - Add new Item
@@ -66,7 +60,6 @@ class TodoListViewController: UITableViewController {
             guard let safeText = textField.text else {return}
             
             self.array.append(MainModel(item: safeText, state: false))
-//            self.defaults.set(self.array, forKey: "TodoListArray")
             self.tableView.reloadData()
         }
         
@@ -92,8 +85,10 @@ extension TodoListViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
-        cell.textLabel?.text = array[indexPath.row].item
-        cell.accessoryType = array[indexPath.row].state ? .checkmark : .none
+        let currentItem = array[indexPath.row]
+        
+        cell.textLabel?.text = currentItem.item
+        cell.accessoryType = currentItem.state ? .checkmark : .none
         
         return cell
     }
