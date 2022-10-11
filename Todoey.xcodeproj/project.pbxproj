@@ -82,9 +82,9 @@
 		8FB4777328ED220A005981ED /* Todoey */ = {
 			isa = PBXGroup;
 			children = (
-				8F88CCC528F5307D00F750E5 /* Model */,
 				8FB4777428ED220A005981ED /* AppDelegate.swift */,
 				8FB4777628ED220A005981ED /* SceneDelegate.swift */,
+				8F88CCC528F5307D00F750E5 /* Model */,
 				8F88CCC828F5316C00F750E5 /* Controller */,
 				8F88CCC928F5317300F750E5 /* View */,
 				8FB4777D28ED220B005981ED /* Assets.xcassets */,
