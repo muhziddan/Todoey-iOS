@@ -22,6 +22,8 @@ class TodoListViewController: UITableViewController {
         array.append(MainModel(item: "three", state: false))
         array.append(MainModel(item: "three", state: false))
         array.append(MainModel(item: "two", state: false))
+        
+        loadData()
     }
     
     //MARK: - Add new Item
@@ -65,6 +67,21 @@ class TodoListViewController: UITableViewController {
         } catch {
             print("error saving data with message: \(error.localizedDescription)")
         }
+    }
+    
+    func loadData() {
+        // make decoder object
+        let decoder = PropertyListDecoder()
+        
+        do {
+            guard let safeFilePath = dataFilePath else {return}
+            // create data object with url
+            let data = try Data(contentsOf: safeFilePath)
+            array = try decoder.decode([MainModel].self, from: data)
+        } catch {
+            print("error loading data with message: \(error.localizedDescription)")
+        }
+        
     }
 }
 
