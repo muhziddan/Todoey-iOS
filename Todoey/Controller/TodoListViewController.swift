@@ -22,30 +22,6 @@ class TodoListViewController: UITableViewController {
         array.append(MainModel(item: "three", state: false))
         array.append(MainModel(item: "three", state: false))
         array.append(MainModel(item: "two", state: false))
-        
-        array.append(MainModel(item: "one", state: false))
-        array.append(MainModel(item: "two", state: false))
-        array.append(MainModel(item: "three", state: false))
-        array.append(MainModel(item: "three", state: false))
-        array.append(MainModel(item: "two", state: false))
-        
-        array.append(MainModel(item: "one", state: false))
-        array.append(MainModel(item: "two", state: false))
-        array.append(MainModel(item: "three", state: false))
-        array.append(MainModel(item: "three", state: false))
-        array.append(MainModel(item: "two", state: false))
-        
-        array.append(MainModel(item: "one", state: false))
-        array.append(MainModel(item: "two", state: false))
-        array.append(MainModel(item: "three", state: false))
-        array.append(MainModel(item: "three", state: false))
-        array.append(MainModel(item: "two", state: false))
-        
-        array.append(MainModel(item: "one", state: false))
-        array.append(MainModel(item: "two", state: false))
-        array.append(MainModel(item: "three", state: false))
-        array.append(MainModel(item: "three", state: false))
-        array.append(MainModel(item: "two", state: false))
     }
     
     //MARK: - Add new Item
