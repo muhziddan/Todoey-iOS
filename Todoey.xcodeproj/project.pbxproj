@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8F487B9829065D4C0011B018 /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 8F487B9629065D4C0011B018 /* DataModel.xcdatamodeld */; };
 		8F88CCC728F530A000F750E5 /* MainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8F88CCC628F530A000F750E5 /* MainModel.swift */; };
 		8FB4777528ED220A005981ED /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB4777428ED220A005981ED /* AppDelegate.swift */; };
 		8FB4777728ED220A005981ED /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8FB4777628ED220A005981ED /* SceneDelegate.swift */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8F487B9729065D4C0011B018 /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		8F88CCC628F530A000F750E5 /* MainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainModel.swift; sourceTree = "<group>"; };
 		8FB4777128ED220A005981ED /* Todoey.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Todoey.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8FB4777428ED220A005981ED /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +45,7 @@
 			isa = PBXGroup;
 			children = (
 				8F88CCC628F530A000F750E5 /* MainModel.swift */,
+				8F487B9629065D4C0011B018 /* DataModel.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -166,6 +169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8F88CCC728F530A000F750E5 /* MainModel.swift in Sources */,
+				8F487B9829065D4C0011B018 /* DataModel.xcdatamodeld in Sources */,
 				8FB4777928ED220A005981ED /* TodoListViewController.swift in Sources */,
 				8FB4777528ED220A005981ED /* AppDelegate.swift in Sources */,
 				8FB4777728ED220A005981ED /* SceneDelegate.swift in Sources */,
@@ -386,6 +390,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		8F487B9629065D4C0011B018 /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				8F487B9729065D4C0011B018 /* DataModel.xcdatamodel */,
+			);
+			currentVersion = 8F487B9729065D4C0011B018 /* DataModel.xcdatamodel */;
+			path = DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 8FB4776928ED220A005981ED /* Project object */;
 }
