@@ -6,18 +6,21 @@
 //
 
 import UIKit
+import CoreData
 
 class TodoListViewController: UITableViewController {
     
-    var array = [MainModel]()
+    var array = [Item]()
     let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appending(path: "Items.plist")
     // user domain mask is user home directory, a place where app will save personal item ssociated with it
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    // core data: context is to trigger the persistent container -> the managed object
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         
-        loadData()
+//        loadData()
     }
     
     //MARK: - Add new Item
@@ -33,13 +36,21 @@ class TodoListViewController: UITableViewController {
             // So when it is called, it can get the latest text from the alertTextField
             guard let safeText = textField.text else {return}
             
-            self.array.append(MainModel(item: safeText, state: false))
+//            let otherC = AppDelegate().persistentContainer.viewContext
+            // otherC is not using singleton, rather it is referencing to app delegate object
+            // will be tested later
+            
+            let newItem = Item(context: self.context)
+            newItem.title = safeText
+            newItem.state = false
+            
+            self.array.append(newItem)
             self.saveData()
             self.tableView.reloadData()
         }
         
         alertView.addTextField { alertTextField in
-            textField.placeholder = "Type new item"
+            alertTextField.placeholder = "Type new item"
             // This where textField var referencing alertTextField
             textField = alertTextField
         }
@@ -50,33 +61,27 @@ class TodoListViewController: UITableViewController {
     }
     
     func saveData() {
-        // make encoder object
-        let encoder = PropertyListEncoder()
-        
         do {
-            // encode data to plist
-            let data = try encoder.encode(array)
-            guard let safeFilePath = dataFilePath else {return}
-            try data.write(to: safeFilePath)
+            try context.save()
         } catch {
             print("error saving data with message: \(error.localizedDescription)")
         }
     }
     
-    func loadData() {
-        // make decoder object
-        let decoder = PropertyListDecoder()
-        
-        do {
-            guard let safeFilePath = dataFilePath else {return}
-            // create data object with url
-            let data = try Data(contentsOf: safeFilePath)
-            array = try decoder.decode([MainModel].self, from: data)
-        } catch {
-            print("error loading data with message: \(error.localizedDescription)")
-        }
-        
-    }
+//    func loadData() {
+//        // make decoder object
+//        let decoder = PropertyListDecoder()
+//
+//        do {
+//            guard let safeFilePath = dataFilePath else {return}
+//            // create data object with url
+//            let data = try Data(contentsOf: safeFilePath)
+//            array = try decoder.decode([MainModel].self, from: data)
+//        } catch {
+//            print("error loading data with message: \(error.localizedDescription)")
+//        }
+//
+//    }
 }
 
 //MARK: - TableView Datasource and Delegate Methods
@@ -91,7 +96,7 @@ extension TodoListViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
         let currentItem = array[indexPath.row]
         
-        cell.textLabel?.text = currentItem.item
+        cell.textLabel?.text = currentItem.title
         cell.accessoryType = currentItem.state ? .checkmark : .none
         
         return cell
