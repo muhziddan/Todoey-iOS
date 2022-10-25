@@ -99,7 +99,6 @@ extension TodoListViewController {
         
         saveData()
         
-        tableView.deselectRow(at: indexPath, animated: true)
         tableView.reloadData()
     }
 }
