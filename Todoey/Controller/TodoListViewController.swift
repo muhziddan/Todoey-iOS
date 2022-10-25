@@ -21,7 +21,7 @@ class TodoListViewController: UITableViewController {
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         // to check persistent container/SQLite database directory of the app
         
-//        loadData()
+        loadData()
     }
     
     //MARK: - Add new Item
@@ -65,20 +65,15 @@ class TodoListViewController: UITableViewController {
         }
     }
     
-//    func loadData() {
-//        // make decoder object
-//        let decoder = PropertyListDecoder()
-//
-//        do {
-//            guard let safeFilePath = dataFilePath else {return}
-//            // create data object with url
-//            let data = try Data(contentsOf: safeFilePath)
-//            array = try decoder.decode([MainModel].self, from: data)
-//        } catch {
-//            print("error loading data with message: \(error.localizedDescription)")
-//        }
-//
-//    }
+    func loadData() {
+        let request = Item.fetchRequest()
+        
+        do {
+            array = try context.fetch(request)
+        } catch {
+            print("error fetching data with message: \(error.localizedDescription)")
+        }
+    }
 }
 
 //MARK: - TableView Datasource and Delegate Methods
