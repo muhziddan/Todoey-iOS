@@ -11,14 +11,15 @@ import CoreData
 class TodoListViewController: UITableViewController {
     
     var array = [Item]()
-    let dataFilePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first?.appending(path: "Items.plist")
-    // user domain mask is user home directory, a place where app will save personal item ssociated with it
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     // core data: context is to trigger the persistent container -> the managed object
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        
+        print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
+        // to check persistent container/SQLite database directory of the app
         
 //        loadData()
     }
@@ -35,10 +36,6 @@ class TodoListViewController: UITableViewController {
             // Text can be updated because textField var referencing the alertTextField
             // So when it is called, it can get the latest text from the alertTextField
             guard let safeText = textField.text else {return}
-            
-//            let otherC = AppDelegate().persistentContainer.viewContext
-            // otherC is not using singleton, rather it is referencing to app delegate object
-            // will be tested later
             
             let newItem = Item(context: self.context)
             newItem.title = safeText
