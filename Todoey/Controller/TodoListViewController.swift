@@ -97,6 +97,10 @@ extension TodoListViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         array[indexPath.row].state = !array[indexPath.row].state
         
+        // if want to delete item
+//        context.delete(array[indexPath.row])
+//        array.remove(at: indexPath.row)
+        
         saveData()
         
         tableView.reloadData()
