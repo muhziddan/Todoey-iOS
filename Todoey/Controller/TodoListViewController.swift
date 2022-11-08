@@ -43,7 +43,6 @@ class TodoListViewController: UITableViewController {
             
             self.array.append(newItem)
             self.saveData()
-            self.tableView.reloadData()
         }
         
         alertView.addTextField { alertTextField in
@@ -63,16 +62,19 @@ class TodoListViewController: UITableViewController {
         } catch {
             print("error saving data with message: \(error.localizedDescription)")
         }
+        
+        tableView.reloadData()
     }
     
-    func loadData() {
-        let request = Item.fetchRequest()
+    func loadData(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
         
         do {
             array = try context.fetch(request)
         } catch {
             print("error fetching data with message: \(error.localizedDescription)")
         }
+        
+        tableView.reloadData()
     }
 }
 
@@ -102,8 +104,20 @@ extension TodoListViewController {
 //        array.remove(at: indexPath.row)
         
         saveData()
-        
-        tableView.reloadData()
     }
 }
 
+//MARK: - Search Bar Delegate
+extension TodoListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        let request = Item.fetchRequest()
+        
+        // making the filter using predicate
+        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text ?? "")
+        
+        // sorting the result
+        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        
+        loadData(with: request)
+    }
+}
