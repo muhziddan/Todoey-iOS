@@ -6,8 +6,11 @@
 //
 
 import UIKit
+import CoreData
 
 class CategoryViewController: UITableViewController {
+    
+    var categoryArray = [Category]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
