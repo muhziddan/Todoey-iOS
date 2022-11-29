@@ -11,6 +11,12 @@ import CoreData
 class TodoListViewController: UITableViewController {
     
     var array = [Item]()
+    var selectedCategory: Category? {
+        didSet {
+            loadData()
+        }
+    }
+    
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     // core data: context is to trigger the persistent container -> the managed object
 
@@ -20,8 +26,6 @@ class TodoListViewController: UITableViewController {
         
         print(FileManager.default.urls(for: .documentDirectory, in: .userDomainMask))
         // to check persistent container/SQLite database directory of the app
-        
-        loadData()
     }
     
     //MARK: - Add new Item
@@ -37,12 +41,15 @@ class TodoListViewController: UITableViewController {
             // So when it is called, it can get the latest text from the alertTextField
             guard let safeText = textField.text else {return}
             
-            let newItem = Item(context: self.context)
-            newItem.title = safeText
-            newItem.state = false
-            
-            self.array.append(newItem)
-            self.saveData()
+            if !safeText.isEmpty {
+                let newItem = Item(context: self.context)
+                newItem.title = safeText
+                newItem.state = false
+                newItem.parentCategory = self.selectedCategory
+                
+                self.array.append(newItem)
+                self.saveData()
+            }
         }
         
         alertView.addTextField { alertTextField in
@@ -66,7 +73,15 @@ class TodoListViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    func loadData(with request: NSFetchRequest<Item> = Item.fetchRequest()) {
+    func loadData(with request: NSFetchRequest<Item> = Item.fetchRequest(), predicate: NSPredicate? = nil) {
+        
+        let categoryPredicate = NSPredicate(format: "parentCategory.name MATCHES %@", selectedCategory!.name!)
+        
+        if let additionalPredicate = predicate {
+            request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [categoryPredicate, additionalPredicate])
+        } else {
+            request.predicate = categoryPredicate
+        }
         
         do {
             array = try context.fetch(request)
@@ -118,12 +133,12 @@ extension TodoListViewController: UISearchBarDelegate {
             let request = Item.fetchRequest()
             
             // making the filter using predicate
-            request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text ?? "")
+            let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text ?? "")
             
             // sorting the result
             request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
             
-            loadData(with: request)
+            loadData(with: request, predicate: predicate)
         }
         
         DispatchQueue.main.async {

@@ -20,16 +20,22 @@ class CategoryViewController: UITableViewController {
     }
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        
         var textField = UITextField()
+        
         let alertView = UIAlertController(title: "Add new Category", message: "", preferredStyle: .alert)
+        
         let action = UIAlertAction(title: "Add Item", style: .default) { action in
             
             guard let safeText = textField.text else {return}
-            let newCategory = Category(context: self.context)
-            newCategory.name = safeText
             
-            self.categoryArray.append(newCategory)
-            self.saveData()
+            if !safeText.isEmpty {
+                let newCategory = Category(context: self.context)
+                newCategory.name = safeText
+                
+                self.categoryArray.append(newCategory)
+                self.saveData()
+            }
         }
         
         alertView.addTextField { alertTextField in
@@ -72,9 +78,23 @@ extension CategoryViewController {
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        
         let currentCategory = categoryArray[indexPath.row]
         cell.textLabel?.text = currentCategory.name
         
         return cell
+    }
+    
+    // MARK: - Table view delegate
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "goToItems", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! TodoListViewController
+        
+        guard let indexPath = tableView.indexPathForSelectedRow else {return}
+        
+        destinationVC.selectedCategory = categoryArray[indexPath.row]
     }
 }

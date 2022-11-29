@@ -59,6 +59,7 @@
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1bI-nH-daG">
                         <rect key="frame" x="0.0" y="59" width="393" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <navigationBarAppearance key="standardAppearance">
                             <color key="backgroundColor" red="0.15294116739999999" green="0.2588235438" blue="0.27450981740000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                             <textAttributes key="titleTextAttributes">
@@ -106,7 +107,6 @@
                     </tableView>
                     <navigationItem key="navigationItem" title="Todoey" id="836-iA-2Ac">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="Ivd-7t-CFb">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="addButtonPressed:" destination="1GJ-Dg-jem" id="ZQV-I5-1zN"/>
                             </connections>
