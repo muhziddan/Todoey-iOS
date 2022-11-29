@@ -11,22 +11,70 @@ import CoreData
 class CategoryViewController: UITableViewController {
     
     var categoryArray = [Category]()
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        loadData()
     }
     
     @IBAction func addButtonPressed(_ sender: UIBarButtonItem) {
+        var textField = UITextField()
+        let alertView = UIAlertController(title: "Add new Category", message: "", preferredStyle: .alert)
+        let action = UIAlertAction(title: "Add Item", style: .default) { action in
+            
+            guard let safeText = textField.text else {return}
+            let newCategory = Category(context: self.context)
+            newCategory.name = safeText
+            
+            self.categoryArray.append(newCategory)
+            self.saveData()
+        }
+        
+        alertView.addTextField { alertTextField in
+            alertTextField.placeholder = "Type new Category"
+            textField = alertTextField
+        }
+        
+        alertView.addAction(action)
+        present(alertView, animated: true)
+    }
+    
+    func saveData()  {
+        do {
+            try context.save()
+        } catch {
+            print("error saving data with message: \(error.localizedDescription)")
+        }
+        
+        tableView.reloadData()
+    }
+    
+    func loadData() {
+        let request = Category.fetchRequest()
+        
+        do {
+            categoryArray = try context.fetch(request)
+        } catch {
+            print("error fetching data with message: \(error.localizedDescription)")
+        }
+        
+        tableView.reloadData()
     }
 }
 
 // MARK: - Table view data source
 extension CategoryViewController {
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 0
-    }
-
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 0
+        return categoryArray.count
+    }
+    
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "CategoryCell", for: indexPath)
+        let currentCategory = categoryArray[indexPath.row]
+        cell.textLabel?.text = currentCategory.name
+        
+        return cell
     }
 }
