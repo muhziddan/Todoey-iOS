@@ -110,14 +110,32 @@ extension TodoListViewController {
 //MARK: - Search Bar Delegate
 extension TodoListViewController: UISearchBarDelegate {
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        let request = Item.fetchRequest()
+        guard let text = searchBar.text else {return}
         
-        // making the filter using predicate
-        request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text ?? "")
+        if text.isEmpty {
+            loadData()
+        } else {
+            let request = Item.fetchRequest()
+            
+            // making the filter using predicate
+            request.predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text ?? "")
+            
+            // sorting the result
+            request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+            
+            loadData(with: request)
+        }
         
-        // sorting the result
-        request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
+        DispatchQueue.main.async {
+            searchBar.resignFirstResponder()
+        }
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let text = searchBar.text else {return}
         
-        loadData(with: request)
+        if text.isEmpty {
+            loadData()
+        }
     }
 }
