@@ -66,7 +66,7 @@ class TodoListViewController: UITableViewController {
     }
     
     func loadData() {
-        todoItems = selectedCategory?.items.sorted(byKeyPath: "title", ascending: true)
+        todoItems = selectedCategory?.items.sorted(byKeyPath: "dateCreated", ascending: true)
 
         tableView.reloadData()
     }
@@ -112,34 +112,30 @@ extension TodoListViewController {
 }
 
 //MARK: - Search Bar Delegate
-//extension TodoListViewController: UISearchBarDelegate {
-//    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-//        guard let text = searchBar.text else {return}
-//
-//        if text.isEmpty {
-//            loadData()
-//        } else {
-//            let request = Item.fetchRequest()
-//
-//            // making the filter using predicate
-//            let predicate = NSPredicate(format: "title CONTAINS[cd] %@", searchBar.text ?? "")
-//
-//            // sorting the result
-//            request.sortDescriptors = [NSSortDescriptor(key: "title", ascending: true)]
-//
-//            loadData(with: request, predicate: predicate)
-//        }
-//
-//        DispatchQueue.main.async {
-//            searchBar.resignFirstResponder()
-//        }
-//    }
-//
-//    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-//        guard let text = searchBar.text else {return}
-//
-//        if text.isEmpty {
-//            loadData()
-//        }
-//    }
-//}
+extension TodoListViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        
+        guard let text = searchBar.text else {return}
+
+        if text.isEmpty {
+            loadData()
+        } else {
+            // using core data, it do not need to load the data again, simply just filter the current data
+            todoItems = todoItems?.filter("title CONTAINS[cd] %@", text).sorted(byKeyPath: "dateCreated", ascending: true)
+            
+            tableView.reloadData()
+        }
+
+        DispatchQueue.main.async {
+            searchBar.resignFirstResponder()
+        }
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let text = searchBar.text else {return}
+
+        if text.isEmpty {
+            loadData()
+        }
+    }
+}
