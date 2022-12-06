@@ -94,13 +94,20 @@ extension TodoListViewController {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        array[indexPath.row].state = !array[indexPath.row].state
         
-        // if want to delete item
-//        context.delete(array[indexPath.row])
-//        array.remove(at: indexPath.row)
+        // check if selected item is not nil
+        guard let selectedItem = todoItems?[indexPath.row] else {return}
         
-//        saveData()
+        do {
+            try realm.write {
+                // update data using realm also done under the realm.write function
+                selectedItem.state = !selectedItem.state
+            }
+        } catch {
+            print("error updating state of items with message: \(error)")
+        }
+        
+        tableView.reloadData()
     }
 }
 
