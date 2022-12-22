@@ -17,6 +17,7 @@ class CategoryViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        navigationItem.backButtonTitle = "Home"
         
         loadData()
     }

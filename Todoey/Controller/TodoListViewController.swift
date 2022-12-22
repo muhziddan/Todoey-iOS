@@ -24,6 +24,12 @@ class TodoListViewController: UITableViewController {
         // Do any additional setup after loading the view.
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationItem.title = selectedCategory?.name ?? "Items"
+    }
+    
     //MARK: - Add new Item
     @IBAction func addNewItem(_ sender: UIBarButtonItem) {
         
