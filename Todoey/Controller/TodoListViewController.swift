@@ -76,6 +76,16 @@ class TodoListViewController: UITableViewController {
 
         tableView.reloadData()
     }
+    
+    func delete(item: Item) {
+        do {
+            try realm.write {
+                realm.delete(item)
+            }
+        } catch {
+            print("error deleting item data with message: \(error)")
+        }
+    }
 }
 
 //MARK: - TableView Datasource and Delegate Methods
@@ -88,6 +98,7 @@ extension TodoListViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         let cell = tableView.dequeueReusableCell(withIdentifier: "TodoItemCell", for: indexPath)
+        
         guard let currentItem = todoItems?[indexPath.row] else {
             cell.textLabel?.text = "no items added yet"
             return cell
@@ -114,6 +125,23 @@ extension TodoListViewController {
         }
         
         tableView.reloadData()
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        guard let selectedItem = todoItems?[indexPath.row] else {return UISwipeActionsConfiguration()}
+        
+        let deleteItem = UIContextualAction(style: .destructive, title: "") { action, view, completionHandler in
+            self.delete(item: selectedItem)
+            self.tableView.deleteRows(at: [indexPath], with: .top)
+        }
+        
+        deleteItem.image = UIImage(systemName: "trash.fill")
+        deleteItem.backgroundColor = .systemRed
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteItem])
+
+        return configuration
     }
 }
 

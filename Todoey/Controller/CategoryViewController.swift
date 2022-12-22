@@ -68,6 +68,19 @@ class CategoryViewController: UITableViewController {
         
         tableView.reloadData()
     }
+    
+    func delete(category: Category) {
+        
+        let childItem = realm.objects(Item.self).filter("ANY parentCategory == %@", category)
+        do {
+            try realm.write {
+                realm.delete(childItem)
+                realm.delete(category)
+            }
+        } catch {
+            print("error deleting category data with message: \(error)")
+        }
+    }
 }
 
 // MARK: - Table view data source
@@ -96,5 +109,22 @@ extension CategoryViewController {
         guard let indexPath = tableView.indexPathForSelectedRow else {return}
         
         destinationVC.selectedCategory = categoryArray?[indexPath.row]
+    }
+    
+    override func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        
+        guard let selectedCategory = categoryArray?[indexPath.row] else {return UISwipeActionsConfiguration()}
+        
+        let deleteCategory = UIContextualAction(style: .destructive, title: "") { action, view, completionHandler in
+            self.delete(category: selectedCategory)
+            self.tableView.deleteRows(at: [indexPath], with: .top)
+        }
+        
+        deleteCategory.image = UIImage(systemName: "trash.fill")
+        deleteCategory.backgroundColor = .systemRed
+        
+        let configuration = UISwipeActionsConfiguration(actions: [deleteCategory])
+        
+        return configuration
     }
 }
